@@ -3,6 +3,7 @@
   <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
 
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="js/services.js"></script>
 </head>
 
 <body>
@@ -12,7 +13,6 @@
     <trip-overview v-if="dataAvailable" v-bind:rows="getRows()"></trip-overview>
   </div>
 
-  <script src="js/services.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

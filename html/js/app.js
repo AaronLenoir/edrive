@@ -1,5 +1,3 @@
-let url = 'https://spreadsheets.google.com/feeds/cells/16hJ_67ox89L3DuVuc8KWAGMYFwb58rVP2fjCkc2AoGE/1/public/full?alt=json';
-
 Vue.component('trip-overview', {
   props: ['rows'],
   template: `
@@ -35,16 +33,9 @@ var app = new Vue({
     data: {}
   },
   created: function () {
-    fetch(url)
-    .then(
-      function(response) {
-          response.json().then(function(data) {
-            app.data = data;
-            app.dataAvailable = true;
-          });
-      }
-    ).catch((error) => {
-      console.error('Error:', error);
+    edriveDataService.fetchData(function (data) {
+      app.data = data;
+      app.dataAvailable = true;
     });
   },
   methods: {

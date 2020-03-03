@@ -1,21 +1,34 @@
 class Trip {
     constructor(rawDataRow, columnIndexes) {
-        // Todo: parse according to type ...
-        this.date = rawDataRow.cells[columnIndexes["Date"]].inputValue;
-        this.startTime = rawDataRow.cells[columnIndexes["Start time"]].inputValue;
-        this.startKm = rawDataRow.cells[columnIndexes["Start km"]].inputValue;
-        this.startCharge = rawDataRow.cells[columnIndexes["Start charge"]].inputValue;
-        this.startTemp = rawDataRow.cells[columnIndexes["Start temp"]].inputValue;
-        this.endTime = rawDataRow.cells[columnIndexes["End Time"]].inputValue;
-        this.endKm = rawDataRow.cells[columnIndexes["End km"]].inputValue;
-        this.endCharge = rawDataRow.cells[columnIndexes["End charge"]].inputValue;
-        this.endTemp = rawDataRow.cells[columnIndexes["End temp"]].inputValue;
-        this.peopleOnBoard = rawDataRow.cells[columnIndexes["POB"]].inputValue;
-        this.bMode = rawDataRow.cells[columnIndexes["B-mode"]].inputValue;
-        this.eco = rawDataRow.cells[columnIndexes["Eco"]].inputValue;
-        this.airco = rawDataRow.cells[columnIndexes["Airco"]].inputValue;
-        this.highway = rawDataRow.cells[columnIndexes["Highway"]].inputValue;
-        this.rain = rawDataRow.cells[columnIndexes["Rain"]].inputValue;
+        this.startDateTime = this.parseDateTime(rawDataRow.cells[columnIndexes["Date"]].inputValue, rawDataRow.cells[columnIndexes["Start time"]].numericValue);
+        this.startKm = Number(rawDataRow.cells[columnIndexes["Start km"]].numericValue);
+        this.startCharge = Number(rawDataRow.cells[columnIndexes["Start charge"]].numericValue);
+        this.startTemp = Number(rawDataRow.cells[columnIndexes["Start temp"]].numericValue);
+        this.endDateTime = this.parseDateTime(rawDataRow.cells[columnIndexes["Date"]].inputValue, rawDataRow.cells[columnIndexes["End Time"]].numericValue);
+        this.endKm = Number(rawDataRow.cells[columnIndexes["End km"]].numericValue);
+        this.endCharge = Number(rawDataRow.cells[columnIndexes["End charge"]].numericValue);
+        this.endTemp = Number(rawDataRow.cells[columnIndexes["End temp"]].numericValue);
+        this.peopleOnBoard = Number(rawDataRow.cells[columnIndexes["POB"]].numericValue);
+        this.bMode = rawDataRow.cells[columnIndexes["B-mode"]].inputValue === "Yes" ? true : false;
+        this.eco = rawDataRow.cells[columnIndexes["Eco"]].inputValue === "Yes" ? true : false;
+        this.airco = rawDataRow.cells[columnIndexes["Airco"]].inputValue === "Yes" ? true : false;
+        this.highway = rawDataRow.cells[columnIndexes["Highway"]].inputValue === "Yes" ? true : false;
+        this.rain = rawDataRow.cells[columnIndexes["Rain"]].inputValue === "Yes" ? true : false;
+
+        this.distance = this.endKm - this.startKm;
+        this.elapsedTime = (this.endDateTime.getHours() * 60 + this.endDateTime.getMinutes()) - (this.startDateTime.getHours() * 60 + this.startDateTime.getMinutes());
+        this.averageSpeed = (this.distance / this.elapsedTime) * 60;
+        this.averageTemp = (this.startTemp + this.endTemp) / 2;
+        this.usedBattery = this.startCharge - this.endCharge;
+        this.batteryPer100Km = (this.usedBattery / this.distance) * 100;
+        this.kWhPer100Km = this.batteryPer100Km * 0.56;
+    }
+
+    parseDateTime(dateString, timeValue) {
+        let splitDate = dateString.split("-");
+        let hours = Math.floor(24*timeValue);
+        let minutes = 60 * ((24*timeValue)%1);
+        return new Date(splitDate[0], splitDate[1], splitDate[2], hours, minutes);
     }
 }
 

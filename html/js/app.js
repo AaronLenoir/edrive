@@ -34,11 +34,11 @@ Vue.component('trip-overview', {
         <td>{{ trip.startDateTime.toTimeString() }}</td>
         <td>{{ trip.startKm.toFixed() }}</td>
         <td>{{ (trip.startCharge * 100).toFixed() }} %</td>
-        <td>{{ trip.startTemp.toFixed() }} °C</td>
+        <td>{{ trip.startTemp.toFixed() }} &deg;C</td>
         <td>{{ trip.endDateTime.toTimeString() }}</td>
         <td>{{ trip.endKm.toFixed() }}</td>
         <td>{{ (trip.endCharge * 100).toFixed() }} %</td>
-        <td>{{ trip.endTemp.toFixed() }} °C</td>
+        <td>{{ trip.endTemp.toFixed() }} &deg;C</td>
         <td>{{ trip.peopleOnBoard }}</td>
         <td>{{ trip.eco ? "Yes" : "No" }}</td>
         <td>{{ trip.bMode ? "Yes" : "No" }}</td>
@@ -48,7 +48,7 @@ Vue.component('trip-overview', {
         <td>{{ trip.distance }}</td>
         <td>{{ trip.elapsedTime }}</td>
         <td>{{ trip.averageSpeed.toFixed() }}</td>
-        <td>{{ trip.averageTemp }} °C</td>
+        <td>{{ trip.averageTemp }} &deg;C</td>
         <td>{{ (trip.usedBattery *100).toFixed() }} %</td>
         <td>{{ (trip.batteryPer100Km * 100).toFixed() }} %</td>
         <td>{{ (trip.kWhPer100Km * 100).toFixed() }}</td>

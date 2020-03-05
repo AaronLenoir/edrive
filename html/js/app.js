@@ -1,5 +1,61 @@
+Vue.component('distance-summary', {
+  props: ['analysis'],
+  mounted: function () {
+    this.loadChart();
+  },
+  updated: function () {
+    this.loadChart();
+  },
+  methods: {
+    loadChart() {
+      let data = this.analysis.trips.getTripDistanceSummary([{name: "short", range: [0, 10]}, {name: "medium", range: [10, 80]}, {name: "long", range: [80, 999999]}]);
+
+      let dataPoints = [];
+      data.forEach(item => dataPoints.push({name: `${item.name} (${item.description()})`, y: item.count}));
+
+      Highcharts.chart('distance-summary-pie', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Trips by distance'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: dataPoints
+        }]
+    });
+    }
+  },
+  template: `
+  <div class="chart" id="distance-summary-pie"></div>
+`
+});
+
 Vue.component('trip-overview', {
-  props: ['trips'],
+  props: ['analysis'],
   template: `
   <table class="pure-table">
     <thead>
@@ -29,7 +85,7 @@ Vue.component('trip-overview', {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="trip in trips.items">
+      <tr v-for="trip in analysis.trips.items">
         <td>{{ trip.startDateTime.getFullYear() }}-{{ trip.startDateTime.getMonth().toString().padStart(2, 0) }}-{{ trip.startDateTime.getDay().toString().padStart(2, 0) }}</td>
         <td>{{ trip.startDateTime.getHours().toString().padStart(2, 0) }}:{{ trip.startDateTime.getMinutes().toString().padStart(2, 0) }}</td>
         <td>{{ trip.startKm.toFixed() }}</td>

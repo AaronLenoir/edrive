@@ -43,6 +43,26 @@ class TripCollection {
         this.items.push(trip);
     }
 
+    getTripDistanceSummary(groups) {
+        let result = [];
+        for(let i = 0; i < groups.length; i++) {
+            let group = groups[i];
+
+            let groupCount = {
+                name: group.name,
+                description: function () {
+                    if (group.range[1] === 999999) { return `${group.range[0]} km and more` }
+                    return `${group.range[0]} to ${group.range[1]} km`
+                },
+                count: this.items.filter(trip => trip.distance > group.range[0] && trip.distance <= group.range[1]).length
+            }
+
+            result.push(groupCount);
+        }
+
+        return result;
+    }
+
     loadTripsFromRawData(rawData) {
         let result = [];
 
@@ -58,7 +78,6 @@ class TripCollection {
 
         rows.slice(1).forEach(row => this.add(new Trip(row, columnIndexes)));
 
-        console.log(result);
         return result;
     }
 

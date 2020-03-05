@@ -8,7 +8,7 @@ Vue.component('distance-summary', {
   },
   methods: {
     loadChart() {
-      let data = this.analysis.trips.getTripDistanceSummary([{name: "short", range: [0, 10]}, {name: "medium", range: [10, 80]}, {name: "long", range: [80, 999999]}]);
+      let data = this.analysis.trips.getTripDistanceSummary([{name: "short", range: [0, 20]}, {name: "medium", range: [20, 80]}, {name: "long", range: [80, 999999]}]);
 
       let dataPoints = [];
       data.forEach(item => dataPoints.push({name: `${item.name} (${item.description()})`, y: item.count}));
